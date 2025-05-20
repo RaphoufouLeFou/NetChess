@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d86e00299b4c541499cfd8d913a429ec
+timeCreated: 1501142541
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 96523
+  packageName: AWP Sniper
+  packageVersion: 1.0
+  assetPath: Assets/AWP/Scenes/AWP.unity
+  uploadId: 194674

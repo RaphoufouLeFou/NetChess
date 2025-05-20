@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c9dcea22df6cd2c4684a18a29a731afa
+timeCreated: 1499701598
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 96523
+  packageName: AWP Sniper
+  packageVersion: 1.0
+  assetPath: Assets/AWP/Models/Tile/Tile.mat
+  uploadId: 194674
