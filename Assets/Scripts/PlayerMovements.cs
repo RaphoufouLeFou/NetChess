@@ -74,7 +74,7 @@ public class PlayerMovements : NetworkBehaviour
 
     void Shoot()
     {
-        if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out RaycastHit hit, 100f))
+        if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out RaycastHit hit, 1000f))
         {
             CmdShootParticles(hit.point, hit.normal);
             Debug.Log("Hit: " + hit.collider.name);

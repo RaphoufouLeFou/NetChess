@@ -75,6 +75,12 @@ public class Steamlobby : MonoBehaviour
         // invite player with "I" key
         if (Input.GetKeyDown(KeyCode.I))
         {
+            Debug.Log("Invite friend key pressed");
+            if (CurrentLobbyId == 0)
+            {
+                Debug.LogWarning("No lobby created to invite friends to.");
+                return;
+            }
             InviteFriend();
         }
     }

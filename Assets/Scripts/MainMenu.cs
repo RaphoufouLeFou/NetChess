@@ -15,7 +15,6 @@ public class MainMenu : MonoBehaviour
     [Header("GameObjects")]
     public GameObject superGlobals;
     private string _ipAddress = "localhost";
-    private string _code = "";
     private string _port = "7777";
 
     private void Start()
@@ -29,50 +28,6 @@ public class MainMenu : MonoBehaviour
     {
         StartGame("", true, false, true);
     }
-
-    private bool IsValidTransformedUsername(string s)
-    {
-        return s.Length != 0;
-    }
-
-    private string TransformSaveName(string old)
-    {
-        string saveName = "";
-        foreach (char c in old)
-            switch (c)
-            {
-                case ' ': saveName += '_';
-                    break;
-                case '/': case '\\': break;
-                default: saveName += c;
-                    break;
-            }
-
-        return saveName;
-    }
-
-    private string TransformUsername(string old)
-    {
-        string userName = "";
-        int i = 0;
-        foreach (char c in old)
-        {
-            if (i++ > 16) break;
-            switch (c)
-            {
-                case ' ':
-                case '_':
-                    userName += '_';
-                    break;
-                case >= 'a' and <= 'z' or >= '0' and <= '9':
-                case >= 'A' and <= 'Z':
-                    userName += c;
-                    break;
-            }
-        }
-
-        return userName;
-    }
     public void NewGameMulti() => NewGame(true);
 
     private void NewGame(bool multi)
@@ -83,7 +38,7 @@ public class MainMenu : MonoBehaviour
     public void SteamJoinGame(GameObject save)
     {
         string saveName = save.GetComponent<TMP_InputField>().text;
-        Debug.Log("from join game");
+        Debug.Log("from steam join game");
         StartGame(saveName, true, false, true);
     }
 
