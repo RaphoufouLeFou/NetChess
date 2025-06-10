@@ -49,7 +49,7 @@ public class NetworkManagement : MonoBehaviour
 
     }
     
-        public void StartHostGame()
+    public void StartHostGame()
     {
         manager.StartHost();
     }

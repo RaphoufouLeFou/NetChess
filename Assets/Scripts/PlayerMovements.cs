@@ -14,10 +14,14 @@ public class PlayerMovements : NetworkBehaviour
     void Start()
     {
         if (!isLocalPlayer)
+        {
+            Camera.SetActive(false);
             return;
-        Cursor.lockState = CursorLockMode.Locked;
 
-        Cursor.visible = false;
+        }
+       //Cursor.lockState = CursorLockMode.Locked;
+
+        //Cursor.visible = false;
 
         healthBar = GameObject.Find("HealthBar");
         Score = GameObject.Find("Score").GetComponent<TMP_Text>();
@@ -29,6 +33,8 @@ public class PlayerMovements : NetworkBehaviour
         {
             healthBar.transform.localScale = new Vector3((float)health / 100, 1, 1);
         }
+
+        UpdateScore(ScoreVal);
         
     }
 
