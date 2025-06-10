@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class PlayerMovements : NetworkBehaviour
 {
@@ -7,6 +8,8 @@ public class PlayerMovements : NetworkBehaviour
     public GameObject Camera;
     public GameObject hitParticles;
     private GameObject healthBar;
+    private TMP_Text Score;
+    private int ScoreVal = 0;
     public int health = 100;
     void Start()
     {
@@ -17,6 +20,28 @@ public class PlayerMovements : NetworkBehaviour
         Cursor.visible = false;
 
         healthBar = GameObject.Find("HealthBar");
+        Score = GameObject.Find("Score").GetComponent<TMP_Text>();
+        if (healthBar == null)
+        {
+            Debug.LogError("HealthBar GameObject not found in the scene.");
+        }
+        else
+        {
+            healthBar.transform.localScale = new Vector3((float)health / 100, 1, 1);
+        }
+        
+    }
+
+    void UpdateScore(int score)
+    {
+        if (Score != null)
+        {
+            Score.text = "Score: " + score;
+        }
+        else
+        {
+            Debug.LogError("Score Text component not found in the scene.");
+        }
     }
 
     void PlayParticules(Vector3 pos, Vector3 normal)
@@ -28,6 +53,15 @@ public class PlayerMovements : NetworkBehaviour
             particles.transform.position += normal * 0.1f;
             Destroy(particles, 2f);
         }
+    }
+
+    void Die()
+    {
+        Debug.Log("Player has died.");
+        health = 100;
+        healthBar.transform.localScale = new Vector3(1, 1, 1);
+        transform.position = Vector3.zero; // Reset position
+        transform.rotation = Quaternion.identity; // Reset rotation
     }
 
     void DoDamage(int clientID)
@@ -83,6 +117,8 @@ public class PlayerMovements : NetworkBehaviour
                 int clientID = hit.collider.GetComponent<NetworkIdentity>().connectionToClient.connectionId;
                 Debug.Log("Shooting player with ID: " + clientID);
                 CmdShootPlayer(clientID);
+                ScoreVal += 10; // Increment score for hitting a player
+                UpdateScore(ScoreVal);
             }
             else
             {
