@@ -73,6 +73,8 @@ public class PlayerMovements : NetworkBehaviour
 
     void DoDamage(uint clientID)
     {
+        if (!isLocalPlayer)
+            return;
         health -= 10;
         if (health <= 0)
         {
@@ -89,14 +91,6 @@ public class PlayerMovements : NetworkBehaviour
     [ClientRpc]
     void RpcShootPlayer(uint clientID)
     {
-        if(!isLocalPlayer)
-            return;
-        Debug.Log("Client " + clientID + "(" + netId + ") is shot.");
-
-        if (clientID != netId)
-            return;
-
-        
         DoDamage(clientID);
     }
     
@@ -115,7 +109,7 @@ public class PlayerMovements : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void CmdShootPlayer(uint clientID)
     {
-        RpcShootPlayer(clientID);
+        DoDamage(clientID);
     }
 
     void Shoot()
@@ -128,7 +122,13 @@ public class PlayerMovements : NetworkBehaviour
             {
                 uint clientID = hit.collider.GetComponent<PlayerMovements>().netId;
                 Debug.Log("Shooting player with ID: " + clientID);
-                CmdShootPlayer(clientID);
+                if (GetComponent<PlayerMovements>().isServer)
+                {
+                    RpcShootPlayer(clientID);
+                }else
+                {
+                    CmdShootPlayer(clientID);
+                }
                 ScoreVal += 10; // Increment score for hitting a player
                 UpdateScore(ScoreVal);
             }
