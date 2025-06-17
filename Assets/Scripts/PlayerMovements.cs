@@ -180,6 +180,7 @@ public class PlayerMovements : NetworkBehaviour
             cameraRotation.x -= 360;
         }
         cameraRotation.x = Mathf.Clamp(cameraRotation.x, -60, 60);
+        cameraRotation.z = 0;
         Camera.transform.localEulerAngles = cameraRotation;
 
         if (Input.GetMouseButtonDown(0))
