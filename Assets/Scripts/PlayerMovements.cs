@@ -4,7 +4,7 @@ using TMPro;
 
 public class PlayerMovements : NetworkBehaviour
 {
-    public float speed = 5f;
+    public float speed = .07f;
     public GameObject Camera;
     public GameObject hitParticles;
     public GameObject healthBar;
@@ -142,10 +142,11 @@ public class PlayerMovements : NetworkBehaviour
     float lastShootTime = 0f;
     float shootInterval = 2f;
 
-    void Update()
+    void FixedUpdate()
     {
         if (!isLocalPlayer)
             return;
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -156,20 +157,11 @@ public class PlayerMovements : NetworkBehaviour
             movement.Normalize();
         }
 
-        transform.Translate(movement * Time.deltaTime * speed);
-        //GetComponent<Rigidbody>().linearVelocity = movement * speed * Time.deltaTime;
+        transform.Translate(movement * speed);
 
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (GetComponent<Rigidbody>() != null && transform.position.y < 0.2f)
-            {
-                GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
-            }
-        }
-
+ 
         transform.Rotate(0, mouseX * 5f, 0);
 
         Camera.transform.Rotate(-mouseY * 5f, 0, 0);
@@ -182,6 +174,20 @@ public class PlayerMovements : NetworkBehaviour
         cameraRotation.x = Mathf.Clamp(cameraRotation.x, -60, 60);
         cameraRotation.z = 0;
         Camera.transform.localEulerAngles = cameraRotation;
+    }
+
+    void Update()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (GetComponent<Rigidbody>() != null && transform.position.y < 0.2f)
+            {
+                GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            }
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -190,6 +196,8 @@ public class PlayerMovements : NetworkBehaviour
             lastShootTime = Time.time;
             Shoot();
         }
+
+
 
         if (Input.GetKeyDown(KeyCode.R))
         {

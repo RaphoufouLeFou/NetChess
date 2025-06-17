@@ -332,9 +332,12 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  speed: 5
+  speed: 0.07
   Camera: {fileID: 5260761307922197090}
   hitParticles: {fileID: 8240243201160791397, guid: 047c9da568cef9f46b62e81479344a89, type: 3}
+  healthBar: {fileID: 0}
+  NetworkManager: {fileID: 0}
+  ScoreVal: 0
   health: 100
 --- !u!136 &198480413914332958
 CapsuleCollider:
