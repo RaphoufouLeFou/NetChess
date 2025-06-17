@@ -8,6 +8,7 @@ public class PlayerMovements : NetworkBehaviour
     public GameObject Camera;
     public GameObject hitParticles;
     public GameObject healthBar;
+    public GameObject NetworkManager;
     private TMP_Text Score;
     public int ScoreVal = 0;
     public int health = 100;
@@ -24,6 +25,7 @@ public class PlayerMovements : NetworkBehaviour
         //Cursor.visible = false;
 
         healthBar = GameObject.Find("HealthBar");
+        NetworkManager = GameObject.Find("NetworkManager");
         Score = GameObject.Find("Score").GetComponent<TMP_Text>();
         if (healthBar == null)
         {
@@ -186,6 +188,13 @@ public class PlayerMovements : NetworkBehaviour
                 return;
             lastShootTime = Time.time;
             Shoot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            NetworkManager.GetComponent<NetworkManagerHUD>().enabled = !NetworkManager.GetComponent<NetworkManagerHUD>().enabled;
         }
     }
 }
