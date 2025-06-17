@@ -193,8 +193,16 @@ public class PlayerMovements : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
             NetworkManager.GetComponent<NetworkManagerHUD>().enabled = !NetworkManager.GetComponent<NetworkManagerHUD>().enabled;
         }
     }
