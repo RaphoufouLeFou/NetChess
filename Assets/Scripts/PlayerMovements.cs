@@ -7,9 +7,9 @@ public class PlayerMovements : NetworkBehaviour
     public float speed = 5f;
     public GameObject Camera;
     public GameObject hitParticles;
-    private GameObject healthBar;
+    public GameObject healthBar;
     private TMP_Text Score;
-    private int ScoreVal = 0;
+    public int ScoreVal = 0;
     public int health = 100;
     void Start()
     {
@@ -19,8 +19,8 @@ public class PlayerMovements : NetworkBehaviour
             return;
 
         }
-       //Cursor.lockState = CursorLockMode.Locked;
 
+        //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
 
         healthBar = GameObject.Find("HealthBar");
@@ -34,8 +34,7 @@ public class PlayerMovements : NetworkBehaviour
             healthBar.transform.localScale = new Vector3((float)health / 100, 1, 1);
         }
 
-        UpdateScore(ScoreVal);
-        
+        UpdateScore(ScoreVal);   
     }
 
     void UpdateScore(int score)
@@ -70,12 +69,13 @@ public class PlayerMovements : NetworkBehaviour
         transform.rotation = Quaternion.identity; // Reset rotation
     }
 
-    void DoDamage(int clientID)
+    void DoDamage(uint clientID)
     {
         health -= 10;
         if (health <= 0)
         {
             Debug.Log("Player " + clientID + " has died.");
+            Die();
         }
         else
         {
@@ -85,13 +85,17 @@ public class PlayerMovements : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcShootPlayer(int clientID)
+    void RpcShootPlayer(uint clientID)
     {
-        if (isLocalPlayer)
-        {
-            Debug.Log("Client " + clientID + " is shot.");
-            DoDamage(clientID);
-        }
+        if(!isLocalPlayer)
+            return;
+        Debug.Log("Client " + clientID + "(" + netId + ") is shot.");
+
+        if (clientID != netId)
+            return;
+
+        
+        DoDamage(clientID);
     }
     
     [ClientRpc]
@@ -107,7 +111,7 @@ public class PlayerMovements : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    void CmdShootPlayer(int clientID)
+    void CmdShootPlayer(uint clientID)
     {
         RpcShootPlayer(clientID);
     }
@@ -118,9 +122,9 @@ public class PlayerMovements : NetworkBehaviour
         {
             CmdShootParticles(hit.point, hit.normal);
             Debug.Log("Hit: " + hit.collider.name);
-            if (hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player") && hit.collider.gameObject != gameObject)
             {
-                int clientID = hit.collider.GetComponent<NetworkIdentity>().connectionToClient.connectionId;
+                uint clientID = hit.collider.GetComponent<PlayerMovements>().netId;
                 Debug.Log("Shooting player with ID: " + clientID);
                 CmdShootPlayer(clientID);
                 ScoreVal += 10; // Increment score for hitting a player
